@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { signIn } from 'next-auth/client'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 
 import classes from './auth-form.module.css'
 
@@ -23,7 +23,8 @@ const AuthForm = () => {
 	const emailInputRef = useRef()
 	const passwordInputRef = useRef()
 	const [isLogin, setIsLogin] = useState(true)
-	const router=useRouter()
+	const [error, setError] = useState()
+	const router = useRouter()
 
 	const switchAuthModeHandler = () => {
 		setIsLogin((prevState) => !prevState)
@@ -45,15 +46,20 @@ const AuthForm = () => {
 		} else {
 			try {
 				const result = await createUser(enteredEmail, enteredPassword)
-				console.log(result)
+				if (!result.error) {
+					router.replace('/profile')
+				}
 			} catch (error) {
-				console.log(error)
+				setError(error.message)
 			}
 		}
 	}
 
 	return (
 		<section className={classes.auth}>
+			<section className={classes.error}>
+				<h2>{error}</h2>
+			</section>
 			<h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
 			<form onSubmit={submitHandler}>
 				<div className={classes.control}>

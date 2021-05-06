@@ -1,12 +1,14 @@
 // import { useEffect, useState } from 'react'
 // import { getSession } from 'next-auth/client'
 
+import { useState } from 'react'
 import ProfileForm from './profile-form'
 import classes from './user-profile.module.css'
 
 // Redirect away if NOT auth
 
 const UserProfile = (props) => {
+	const [message, setMessage] = useState()
 	// const [isLoading, setIsLoading] = useState(true)
 
 	// useEffect(() => {
@@ -31,11 +33,15 @@ const UserProfile = (props) => {
 			},
 		})
 		const data = await response.json()
-		console.log(data)
+		setMessage(data.message)
+		
 	}
 	return (
 		<section className={classes.profile}>
 			<h1>Your User Profile</h1>
+			<section className={classes.message}>
+				<h3>{message}</h3>
+			</section>
 			<ProfileForm onChangePassword={changePasswordHandler} />
 		</section>
 	)

@@ -30,7 +30,7 @@ const signupHandler = async (req, res) => {
 			return
 		}
 
-		const result = await db
+		await db
 			.collection('next-auth-users')
 			.insertOne({ email: email, password: hashedPassword })
 

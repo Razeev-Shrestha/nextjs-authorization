@@ -1,19 +1,18 @@
-import { useRef } from 'react'
+import { useState } from 'react'
 import classes from './profile-form.module.css'
 
 const ProfileForm = (props) => {
-	const oldPasswordInputRef = useRef()
-	const newPasswordInputRef = useRef()
+	const [oldPassword, setOldPassword] = useState()
+	const [newPassword, setNewPassword] = useState()
 
 	const submitHandler = async (e) => {
 		e.preventDefault()
-		const enteredOldPassword = oldPasswordInputRef.current.value
-		const enteredNewPassword = newPasswordInputRef.current.value
-		
 		props.onChangePassword({
-			newPassword: enteredNewPassword,
-			oldPassword: enteredOldPassword,
+			newPassword: newPassword,
+			oldPassword: oldPassword,
 		})
+		setNewPassword()
+		setOldPassword()
 	}
 	return (
 		<form className={classes.form} onSubmit={submitHandler}>
@@ -22,7 +21,8 @@ const ProfileForm = (props) => {
 				<input
 					type='password'
 					id='new-password'
-					ref={newPasswordInputRef}
+					value={newPassword}
+					onChange={(e) => setNewPassword(e.target.value)}
 				/>
 			</div>
 			<div className={classes.control}>
@@ -30,7 +30,8 @@ const ProfileForm = (props) => {
 				<input
 					type='password'
 					id='old-password'
-					ref={oldPasswordInputRef}
+					value={oldPassword}
+					onChange={(e) => setOldPassword(e.target.value)}
 				/>
 			</div>
 			<div className={classes.action}>
